@@ -1,6 +1,6 @@
 from graphics import Point, Line, Window
 class Cell():
-    def __init__(self, left_w, right_w, top_w, bottom_w, point_1, point_2, win):
+    def __init__(self, left_w, right_w, top_w, bottom_w, point_1, point_2, win: Window):
         self._has_left_wall = left_w
         self._has_right_wall = right_w
         self._has_top_wall = top_w
@@ -30,10 +30,20 @@ class Cell():
         top_w = Line(top_left, top_right)
 
         if self._has_left_wall:
-            left_w.draw(self._win.Canvas,"green")
+            self._win.draw_line(left_w, "green")
         if self._has_bottom_wall:
-            bottom_w.draw(self._win.Canvas, "green")
+            self._win.draw_line(bottom_w, "green")
         if self._has_right_wall:
-            right_w.draw(self._win.Canvas, "green")
+            self._win.draw_line(right_w, "green")
         if self._has_top_wall:
-            top_w.draw(self._win.Canvas, "green")
+            self._win.draw_line(top_w, "green")
+
+    def draw_move(self, to_move: 'Cell', undo = False):
+        if not undo:
+            line_color = "red"
+        else:
+            line_color = "gray"
+        self_center = Point((self._x2-self._x1)/2 + self._x1, (self._y2-self._y1)/2 +self._y1)
+        to_move_center = Point((to_move._x2-to_move._x1)/2 +to_move._x1, (to_move._y2-to_move._y1)/2 + to_move._y1)
+        line = Line(self_center, to_move_center)
+        self._win.draw_line(line, line_color)
